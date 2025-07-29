@@ -1,0 +1,177 @@
+# SAHAYAK Emergency App - Git Ignore Configuration
+
+# Dependencies
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Expo
+.expo/
+dist/
+web-build/
+.expo-shared/
+expo-env.d.ts
+
+# Native
+*.orig.*
+*.jks
+*.p8
+*.p12
+*.key
+*.mobileprovision
+
+# Metro
+.metro-health-check*
+
+# Debug
+npm-debug.*
+yarn-debug.*
+yarn-error.*
+
+# macOS
+.DS_Store
+*.pem
+
+# Local env files
+.env*.local
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# TypeScript
+*.tsbuildinfo
+
+# IDE - VSCode
+.vscode/*
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
+
+# IDE - WebStorm/IntelliJ
+.idea/
+
+# Logs
+logs
+*.log
+
+# Runtime data
+pids
+*.pid
+*.seed
+*.pid.lock
+
+# Coverage directory used by tools like istanbul
+coverage/
+*.lcov
+
+# nyc test coverage
+.nyc_output
+
+# ESLint cache
+.eslintcache
+
+# Optional npm cache directory
+.npm
+
+# Yarn Integrity file
+.yarn-integrity
+
+# Parcel-bundler cache
+.cache
+.parcel-cache
+
+# Android
+*.apk
+*.aab
+*.dex
+*.ap_
+bin/
+gen/
+out/
+build/
+.gradle/
+local.properties
+proguard/
+*.keystore
+!debug.keystore
+
+# iOS
+*.ipa
+*.dSYM.zip
+*.dSYM
+DerivedData
+*.hmap
+*.xcuserstate
+project.xcworkspace
+
+# CocoaPods
+ios/Pods/
+ios/Podfile.lock
+
+# Bundle artifacts
+*.jsbundle
+
+# EAS Build
+eas-build-*/
+
+# Fastlane
+fastlane/report.xml
+fastlane/Preview.html
+fastlane/screenshots
+fastlane/test_output
+
+# Bundle analysis
+bundle-analyzer/
+
+# Temporary files
+tmp/
+temp/
+
+# Editor directories and files
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+
+# OS generated files
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+$RECYCLE.BIN/
+
+# Security and credentials
+google-service-account.json
+google-services.json
+GoogleService-Info.plist
+*.p12
+*.keystore
+!debug.keystore
+
+# SAHAYAK App Specific
+# Emergency data cache (for testing only)
+emergency-cache/
+test-data/
+mesh-test-data/
+bluetooth-logs/
+offline-sos-test/
+
+# Build artifacts
+*.tar.gz
+*.zip
+*.rar
+
+# Backup files
+*.bak
+*.backup
+*~
+
+# Lock files (keep yarn.lock but not package-lock.json for Expo projects)
+package-lock.json
+
+# Expo CLI cache
+.expo-cli/
