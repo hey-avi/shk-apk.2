@@ -48,7 +48,8 @@
     "userInterfaceStyle": "automatic",
     "newArchEnabled": false,
     "ios": {
-      "supportsTablet": false
+      "supportsTablet": false,
+      "bundleIdentifier": "com.sahayak.emergency.dev"
     },
     "web": {
       "bundler": "metro",
