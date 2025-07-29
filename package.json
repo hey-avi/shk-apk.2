@@ -9,9 +9,13 @@
     "build:android": "eas build --platform android --profile preview",
     "build:android:dev": "eas build --platform android --profile development",
     "build:android:prod": "eas build --platform android --profile production",
-    "lint": "expo lint"
+    "lint": "expo lint",
+    "android": "expo run:android",
+    "ios": "expo run:ios"
   },
   "dependencies": {
+    "@expo/config-plugins": "~10.1.1",
+    "@expo/prebuild-config": "~9.0.0",
     "@expo/vector-icons": "^14.1.0",
     "@react-native-async-storage/async-storage": "2.1.2",
     "expo": "^53.0.0",
@@ -20,6 +24,7 @@
     "expo-camera": "~16.1.5",
     "expo-constants": "~17.1.3",
     "expo-crypto": "^14.1.5",
+    "expo-dev-client": "~5.2.4",
     "expo-font": "~13.3.2",
     "expo-haptics": "^14.1.4",
     "expo-linear-gradient": "~14.1.3",
@@ -38,8 +43,8 @@
     "react": "19.0.0",
     "react-dom": "19.0.0",
     "react-native": "0.79.5",
-    "react-native-background-service": "^1.0.1",
-    "react-native-bluetooth-classic": "^1.60.0-rc.5",
+    "react-native-ble-plx": "^3.5.0",
+    "react-native-bluetooth-classic": "^1.73.0-rc.14",
     "react-native-device-info": "^14.0.4",
     "react-native-encrypted-storage": "^4.0.3",
     "react-native-gesture-handler": "~2.24.0",
@@ -61,9 +66,8 @@
     "doctor": {
       "reactNativeDirectoryCheck": {
         "exclude": [
-          "react-native-bluetooth-classic",
           "react-native-encrypted-storage",
-          "react-native-background-service"
+          "react-native-bluetooth-classic"
         ],
         "listUnknownPackages": false
       }

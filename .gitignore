@@ -13,6 +13,10 @@ web-build/
 .expo-shared/
 expo-env.d.ts
 
+# Prebuild generated folders (using CNG/Prebuild workflow)
+/android
+/ios
+
 # Native
 *.orig.*
 *.jks

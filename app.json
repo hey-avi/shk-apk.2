@@ -66,8 +66,9 @@
     "extra": {
       "router": {},
       "eas": {
-        "projectId": "06ac7073-1093-4b08-b869-c372cc219752"
+        "projectId": "b10facce-51a8-4981-9d66-c1704d05522d"
       }
-    }
+    },
+    "owner": "hey_avi"
   }
 }
