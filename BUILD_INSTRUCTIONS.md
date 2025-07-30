@@ -101,6 +101,41 @@ Follow the prompts to set up keystore and signing certificates.
 
 ## Troubleshooting
 
+### App Crashes on First Launch
+
+**Problem**: App crashes immediately when opened for the first time.
+
+**Solution**: 
+1. **Clear app data**: Go to Android Settings > Apps > Sahayak > Storage > Clear Data
+2. **Enable permissions BEFORE opening**: Go to Android Settings > Apps > Sahayak > Permissions
+3. **Grant all permissions**:
+   - Location (Allow all the time)
+   - Phone 
+   - Camera
+   - Microphone
+   - Nearby devices/Bluetooth
+   - Notifications
+4. **Then open the app** - it should work without crashing
+
+**Why this happens**: The app tries to initialize Bluetooth and location services immediately, but crashes if permissions aren't granted first.
+
+### Mesh Network Showing Fake Devices
+
+**Problem**: App shows "SAHAYAK User 1", "SAHAYAK User 2" etc. instead of real devices.
+
+**How to check**:
+- Look at the "Discovery Status" section in the mesh network panel
+- If it shows "🟡 SIMULATED (Demo)" - these are fake devices for testing
+- If it shows "🔵 REAL Bluetooth" - these are actual nearby SAHAYAK devices
+
+**To get real devices**:
+1. Ensure Bluetooth permissions are granted
+2. Turn on Bluetooth on your device
+3. Install the app on multiple Android devices nearby
+4. All devices should have the same app version and Bluetooth enabled
+
+### Other Issues
+
 - If build fails due to permissions, check that all required permissions are properly declared
 - For Bluetooth issues, ensure target SDK is properly configured
 - For location issues, verify background location permission is included

@@ -91,6 +91,33 @@ class MeshNetworkService {
     }
   }
 
+  // Check Bluetooth permissions before initialization
+  private async checkBluetoothPermissions(): Promise<boolean> {
+    if (Platform.OS !== 'android') {
+      return true; // iOS doesn't need explicit Bluetooth permissions
+    }
+
+    try {
+      const permissions = [
+        PERMISSIONS.ANDROID.ACCESS_FINE_LOCATION,
+        PERMISSIONS.ANDROID.BLUETOOTH_SCAN,
+        PERMISSIONS.ANDROID.BLUETOOTH_CONNECT,
+        PERMISSIONS.ANDROID.BLUETOOTH_ADVERTISE
+      ];
+
+      const results = await Promise.all(
+        permissions.map(permission => request(permission))
+      );
+
+      const allGranted = results.every(result => result === RESULTS.GRANTED);
+      console.log('🔵 Bluetooth permissions check:', allGranted ? 'GRANTED' : 'DENIED');
+      return allGranted;
+    } catch (error) {
+      console.error('❌ Error checking Bluetooth permissions:', error);
+      return false;
+    }
+  }
+
   // Initialize Bluetooth components
   private async initializeBluetooth(): Promise<void> {
     try {
@@ -101,18 +128,28 @@ class MeshNetworkService {
 
       console.log('🔵 Initializing Bluetooth components...');
 
-      // Initialize BLE Manager
-      const bleState = await this.bleManager.state();
-      console.log('🔵 BLE State:', bleState);
+      // Check permissions first before accessing Bluetooth APIs
+      const hasPermissions = await this.checkBluetoothPermissions();
+      if (!hasPermissions) {
+        console.log('⚠️ Bluetooth permissions not granted - skipping Bluetooth initialization');
+        return;
+      }
 
-      // Check if Bluetooth is enabled
-      if (bleState === State.PoweredOn) {
-        this.isBluetoothEnabled = true;
-        console.log('✅ Bluetooth is enabled');
-      } else {
-        console.log('⚠️ Bluetooth is not enabled');
-        // Request user to enable Bluetooth
-        this.bleManager.enable();
+      try {
+        // Initialize BLE Manager
+        const bleState = await this.bleManager.state();
+        console.log('🔵 BLE State:', bleState);
+
+        // Check if Bluetooth is enabled
+        if (bleState === State.PoweredOn) {
+          this.isBluetoothEnabled = true;
+          console.log('✅ Bluetooth is enabled');
+        } else {
+          console.log('⚠️ Bluetooth is not enabled');
+          // Don't automatically enable - let user do it manually
+        }
+      } catch (bleError) {
+        console.error('🔴 BLE Manager initialization failed:', bleError);
       }
 
       // Initialize Bluetooth Classic
@@ -264,12 +301,23 @@ class MeshNetworkService {
     try {
       console.log('🔍 Starting device discovery...');
       
+      // Check permissions first
+      const hasPermissions = await this.checkBluetoothPermissions();
+      if (!hasPermissions) {
+        console.log('❌ Bluetooth permissions not granted - using SIMULATED devices');
+        await this.startSimulatedDiscovery();
+        this.isScanning = true;
+        return;
+      }
+      
       // Try to start real Android discovery, fall back to simulation
       const realDiscoveryStarted = await this.startRealAndroidDiscovery();
       
       if (!realDiscoveryStarted) {
-        console.log('📱 Using simulated discovery for development');
+        console.log('📱 Real discovery failed - using SIMULATED devices');
         await this.startSimulatedDiscovery();
+      } else {
+        console.log('✅ Using REAL Bluetooth device discovery');
       }
       
       this.isScanning = true;
@@ -1091,6 +1139,29 @@ class MeshNetworkService {
   // Get nearby devices
   getNearbyDevices(): MeshNode[] {
     return Array.from(this.nearbyDevices.values());
+  }
+
+  // Check if devices are real or simulated
+  getDeviceDiscoveryStatus(): {
+    isRealDiscovery: boolean;
+    hasBluetoothPermissions: boolean;
+    deviceCount: number;
+    deviceTypes: string[];
+  } {
+    const devices = Array.from(this.nearbyDevices.values());
+    const deviceTypes = devices.map(d => {
+      if (d.deviceInfo.id.startsWith('dev-') || d.deviceInfo.id.startsWith('web-peer-')) {
+        return 'SIMULATED';
+      }
+      return 'REAL';
+    });
+    
+    return {
+      isRealDiscovery: this.isBluetoothEnabled && deviceTypes.includes('REAL'),
+      hasBluetoothPermissions: this.isBluetoothEnabled,
+      deviceCount: devices.length,
+      deviceTypes: [...new Set(deviceTypes)]
+    };
   }
 
   // Get SOS queue

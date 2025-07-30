@@ -9,6 +9,12 @@ export interface MeshNetworkStatus {
   deviceInfo: DeviceInfo | null;
   nearbyDevicesList: MeshNode[];
   sosQueue: SOSPackage[];
+  discoveryStatus: {
+    isRealDiscovery: boolean;
+    hasBluetoothPermissions: boolean;
+    deviceCount: number;
+    deviceTypes: string[];
+  };
 }
 
 export const useMeshNetwork = () => {
@@ -19,7 +25,13 @@ export const useMeshNetwork = () => {
     hasInternet: false,
     deviceInfo: null,
     nearbyDevicesList: [],
-    sosQueue: []
+    sosQueue: [],
+    discoveryStatus: {
+      isRealDiscovery: false,
+      hasBluetoothPermissions: false,
+      deviceCount: 0,
+      deviceTypes: []
+    }
   });
 
   const [isLoading, setIsLoading] = useState(true);
@@ -54,11 +66,13 @@ export const useMeshNetwork = () => {
     const meshStatus = meshNetworkService.getMeshStatus();
     const nearbyDevices = meshNetworkService.getNearbyDevices();
     const sosQueue = meshNetworkService.getSOSQueue();
+    const discoveryStatus = meshNetworkService.getDeviceDiscoveryStatus();
 
     setStatus({
       ...meshStatus,
       nearbyDevicesList: nearbyDevices,
-      sosQueue: sosQueue
+      sosQueue: sosQueue,
+      discoveryStatus: discoveryStatus
     });
   };
 

@@ -35,10 +35,15 @@ export const MeshNetworkStatus: React.FC = () => {
   };
 
   const getConnectionText = () => {
+    const { discoveryStatus } = status;
+    const deviceTypeText = discoveryStatus.deviceTypes.length > 0 
+      ? ` (${discoveryStatus.deviceTypes.join(', ')})` 
+      : '';
+    
     if (status.hasInternet) {
       return 'Internet Connected';
     } else if (status.nearbyDevices > 0) {
-      return `Mesh Network Active • ${status.nearbyDevices} nodes`;
+      return `Mesh Network • ${status.nearbyDevices} devices${deviceTypeText}`;
     } else {
       return 'Offline Mode';
     }
@@ -83,7 +88,27 @@ export const MeshNetworkStatus: React.FC = () => {
               <Users size={14} color="#10B981" />
             </View>
             <Text style={styles.meshText}>
+                      {(status.nearbyDevices > 0) && (
+          <View style={styles.meshInfo}>
+            <Text style={styles.meshText}>
               {status.nearbyDevices} SAHAYAK device{status.nearbyDevices > 1 ? 's' : ''} nearby for emergency relay
+            </Text>
+            
+            {/* Debug information */}
+            <View style={styles.debugSection}>
+              <Text style={styles.debugTitle}>Discovery Status:</Text>
+              <Text style={styles.debugText}>
+                Mode: {status.discoveryStatus.isRealDiscovery ? '🔵 REAL Bluetooth' : '🟡 SIMULATED (Demo)'}
+              </Text>
+              <Text style={styles.debugText}>
+                Permissions: {status.discoveryStatus.hasBluetoothPermissions ? '✅ Granted' : '❌ Missing'}
+              </Text>
+              <Text style={styles.debugText}>
+                Types: {status.discoveryStatus.deviceTypes.join(', ') || 'None'}
+              </Text>
+            </View>
+          </View>
+        )}
             </Text>
           </View>
         )}
@@ -187,5 +212,32 @@ const styles = StyleSheet.create({
     color: '#166534',
     fontWeight: '600',
     flex: 1,
+  },
+  meshInfo: {
+    flexDirection: 'column',
+    backgroundColor: '#F0FDF4',
+    paddingHorizontal: 12,
+    paddingVertical: 10,
+    borderRadius: 12,
+    borderWidth: 1,
+    borderColor: '#DCFCE7',
+  },
+  debugSection: {
+    marginTop: 8,
+    paddingTop: 8,
+    borderTopWidth: 1,
+    borderTopColor: '#DCFCE7',
+  },
+  debugTitle: {
+    fontSize: 12,
+    color: '#166534',
+    fontWeight: '700',
+    marginBottom: 4,
+  },
+  debugText: {
+    fontSize: 11,
+    color: '#166534',
+    marginBottom: 2,
+    fontFamily: 'monospace',
   },
 });
